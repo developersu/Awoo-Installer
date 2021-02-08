@@ -40,8 +40,8 @@ jobs:
 
       # Checks-out your repository
       - uses: actions/checkout@v2
-        working-directory: env._GH_AWOO_DIR
         with:
+          path: env._GH_AWOO_DIR
           submodules: recursive
 
       - name: Make
@@ -51,6 +51,5 @@ jobs:
       - name: Save artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: env._GH_AWOO_DIR
           name: Awoo-libnx-${{ steps.libnxtag.outputs.tag }}
-          path: ./*.nro
+          path: ${{ env._GH_AWOO_DIR }}/*.nro

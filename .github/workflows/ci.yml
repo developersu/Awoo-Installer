@@ -13,7 +13,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       _gh_libnx_dir: ./libnx
-      _gh_homebrew_dir: ./homebrew
     container: devkitpro/devkita64:latest
   
     steps:
@@ -48,17 +47,15 @@ jobs:
       # Checks-out your repository
       - name: Checkout this repo
         uses: actions/checkout@v2
-        with:
-          path: ${{ env._gh_homebrew_dir }}
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
+        with:
 #          submodules: true
 
       - name: Make
-        working-directory: ${{ env._gh_homebrew_dir }}
         run: make
           
       - name: Save artifacts
         uses: actions/upload-artifact@v2
         with:
           name: homebrew-libnx-${{ steps.libnxtag.outputs.tag }}
-          path: ${{ env._gh_homebrew_dir }}/*.nro
+          path: ./*.nro

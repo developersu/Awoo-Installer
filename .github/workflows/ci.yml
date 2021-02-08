@@ -1,0 +1,44 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: devkitpro/devkita64:latest
+  
+    steps:
+
+      - name: Find latest libnx release tag
+        uses: oprypin/find-latest-tag@v1
+        with:
+          repository: switchbrew/libnx
+          releases-only: true
+        id: libnxtag
+
+      - name: Get latest libnx
+        uses: actions/checkout@v2
+        with:
+          repository: switchbrew/libnx
+          ref: ${{ steps.libnxtag.outputs.tag }}
+    
+      # Checks-out your repository
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - name: Make
+        run: make
+          
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Awoo-libnx-${{ steps.libnxtag.outputs.tag }}
+          path: ./*.nro

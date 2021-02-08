@@ -28,11 +28,11 @@ jobs:
         id: libnxtag
 
       - name: Get latest libnx
-        working-directory: env._GH_LIBNX_DIR
         uses: actions/checkout@v2
         with:
           repository: switchbrew/libnx
           ref: ${{ steps.libnxtag.outputs.tag }}
+        working-directory: env._GH_LIBNX_DIR
 
       - name: Install libnx
         working-directory: env._GH_LIBNX_DIR
@@ -48,8 +48,9 @@ jobs:
         working-directory: env._GH_AWOO_DIR
         run: make
           
-      - uses: actions/upload-artifact@v2
-        working-directory: env._GH_AWOO_DIR
+      - name: Save artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: Awoo-libnx-${{ steps.libnxtag.outputs.tag }}
           path: ./*.nro
+        working-directory: env._GH_AWOO_DIR

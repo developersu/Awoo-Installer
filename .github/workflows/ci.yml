@@ -35,9 +35,8 @@ jobs:
           ref: ${{ steps.libnxtag.outputs.tag }}
 
       - name: Make
+        working-directory: env._GH_LIBNX_DIR
         run: make install
-        with:
-          working-directory: env._GH_LIBNX_DIR
 
       # Checks-out your repository
       - uses: actions/checkout@v2
@@ -46,9 +45,8 @@ jobs:
           submodules: recursive
 
       - name: Make
+        working-directory: env._GH_AWOO_DIR 
         run: make
-        with:
-          working-directory: env._GH_AWOO_DIR 
           
       - uses: actions/upload-artifact@v2
         with:

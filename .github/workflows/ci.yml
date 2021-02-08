@@ -46,7 +46,8 @@ jobs:
 
       - name: Checkout submodules
         working-directory: ${{ github.workspace }}/${{ env._gh_homebrew_dir }}
-        run: git submodule update --init --recursive
+#        run: git submodule update --init --recursive
+        run: ls -la
 
       - name: Make
         working-directory: ${{ env._gh_homebrew_dir }}

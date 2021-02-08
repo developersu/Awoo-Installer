@@ -48,7 +48,7 @@ jobs:
       - name: Checkout this repo
         uses: actions/checkout@v2
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
-        with:
+#        with:
 #          submodules: true
 
       - name: Make

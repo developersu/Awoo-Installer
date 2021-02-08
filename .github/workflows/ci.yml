@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 on:
@@ -15,41 +13,47 @@ jobs:
     runs-on: ubuntu-latest
     env:
       _GH_LIBNX_DIR: ./libnx
-      _GH_AWOO_DIR: ./awoo
+      _GH_HOMEBREW_DIR: ./homebrew
     container: devkitpro/devkita64:latest
   
     steps:
 
-      - name: Find latest libnx release tag
-        uses: oprypin/find-latest-tag@v1
-        with:
-          repository: switchbrew/libnx
-          releases-only: true
-        id: libnxtag
-
-      - name: Get latest libnx
-        uses: actions/checkout@v2
-        with:
-          path: env._GH_LIBNX_DIR
-          repository: switchbrew/libnx
-          ref: ${{ steps.libnxtag.outputs.tag }}
-
-      - name: Install libnx
-        working-directory: env._GH_LIBNX_DIR
-        run: make install
+#      - name: Find latest libnx release tag
+#        uses: oprypin/find-latest-tag@v1
+#        with:
+#          repository: switchbrew/libnx
+#          releases-only: true
+#        id: libnxtag
+#
+#      - name: Get latest libnx
+#        uses: actions/checkout@v2
+#        with:
+#          path: ${{ env._GH_LIBNX_DIR }}
+#          repository: switchbrew/libnx
+#          ref: ${{ steps.libnxtag.outputs.tag }}
+#
+#      - name: Install libnx
+#        working-directory: ${{ env._GH_LIBNX_DIR }}
+#        run: make install
 
       # Checks-out your repository
-      - uses: actions/checkout@v2
+      - name: Checkout this repo
+        uses: actions/checkout@v2
         with:
-          path: env._GH_AWOO_DIR
-          submodules: recursive
+          path: ${{ env._GH_HOMEBREW_DIR }}
+# TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
+#          submodules: recursive
+
+      - name: Checkout submodules
+        working-directory: ${{ env._GH_HOMEBREW_DIR }}
+        run: git submodule update --init --recursive
 
       - name: Make
-        working-directory: env._GH_AWOO_DIR
+        working-directory: ${{ env._GH_HOMEBREW_DIR }}
         run: make
           
       - name: Save artifacts
         uses: actions/upload-artifact@v2
         with:
-          name: Awoo-libnx-${{ steps.libnxtag.outputs.tag }}
-          path: ${{ env._GH_AWOO_DIR }}/*.nro
+          name: homebrew-libnx-${{ steps.libnxtag.outputs.tag }}
+          path: ${{ env._GH_HOMEBREW_DIR }}/*.nro

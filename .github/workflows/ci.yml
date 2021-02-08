@@ -41,15 +41,15 @@ jobs:
 #        working-directory: ${{ env._gh_libnx_dir }}
 #        run: make install
 
-      - name: Checkout submodules
-        uses: textbook/git-checkout-submodule-action@master
-
       # Checks-out your repository
       - name: Checkout this repo
         uses: actions/checkout@v2
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
 #        with:
 #          submodules: true
+
+      - name: Checkout submodules
+        uses: textbook/git-checkout-submodule-action@master
 
       - name: Make
         run: make

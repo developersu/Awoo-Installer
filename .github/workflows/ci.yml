@@ -21,7 +21,7 @@ jobs:
          run: |
            echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list
            apt update
-           yes|apt upgrade git
+           apt -y upgrade git
 #      - name: Find latest libnx release tag
 #        uses: oprypin/find-latest-tag@v1
 #        with:

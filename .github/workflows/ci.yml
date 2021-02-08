@@ -12,8 +12,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      _GH_LIBNX_DIR: ./libnx
-      _GH_HOMEBREW_DIR: ./homebrew
+      _gh_libnx_dir: ./libnx
+      _gh_homebrew_dir: ./homebrew
     container: devkitpro/devkita64:latest
   
     steps:
@@ -28,31 +28,32 @@ jobs:
 #      - name: Get latest libnx
 #        uses: actions/checkout@v2
 #        with:
-#          path: ${{ env._GH_LIBNX_DIR }}
+#          path: ${{ env._gh_libnx_dir }}
 #          repository: switchbrew/libnx
 #          ref: ${{ steps.libnxtag.outputs.tag }}
 #
 #      - name: Install libnx
-#        working-directory: ${{ env._GH_LIBNX_DIR }}
+#        working-directory: ${{ env._gh_libnx_dir }}
 #        run: make install
 
       # Checks-out your repository
       - name: Checkout this repo
         uses: actions/checkout@v2
         with:
-          path: ${{ env._GH_HOMEBREW_DIR }}
+          path: ${{ env._gh_homebrew_dir }}
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
 #          submodules: recursive
 
       - name: Checkout submodules
+        working-directory: ${{ github.workspace }}/${{ env._gh_homebrew_dir }}
         run: git submodule update --init --recursive
 
       - name: Make
-        working-directory: ${{ env._GH_HOMEBREW_DIR }}
+        working-directory: ${{ env._gh_homebrew_dir }}
         run: make
           
       - name: Save artifacts
         uses: actions/upload-artifact@v2
         with:
           name: homebrew-libnx-${{ steps.libnxtag.outputs.tag }}
-          path: ${{ env._GH_HOMEBREW_DIR }}/*.nro
+          path: ${{ env._gh_homebrew_dir }}/*.nro

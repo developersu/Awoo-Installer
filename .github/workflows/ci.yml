@@ -45,7 +45,6 @@ jobs:
 #          submodules: recursive
 
       - name: Checkout submodules
-        working-directory: ${{ env._GH_HOMEBREW_DIR }}
         run: git submodule update --init --recursive
 
       - name: Make

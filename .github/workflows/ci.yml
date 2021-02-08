@@ -18,11 +18,11 @@ jobs:
   
     steps:
 
-      - name: Update GIT on Debian Stetch used for devkita64
-        run: |
-          echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list
-          apt update
-          apt -y upgrade git
+#      - name: Update GIT on Debian Stetch used for devkita64
+#        run: |
+#          echo 'deb http://deb.debian.org/debian buster-backports main' >> /etc/apt/sources.list
+#          apt update
+#          apt -y upgrade git
 
 #      - name: Find latest libnx release tag
 #        uses: oprypin/find-latest-tag@v1
@@ -42,13 +42,17 @@ jobs:
 #        working-directory: ${{ env._gh_libnx_dir }}
 #        run: make install
 
+      - name: Checkout submodules
+        working-directory: ${{ env._gh_homebrew_dir }}
+        uses: textbook/git-checkout-submodule-action@master
+
       # Checks-out your repository
       - name: Checkout this repo
         uses: actions/checkout@v2
         with:
           path: ${{ env._gh_homebrew_dir }}
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
-          submodules: true
+#          submodules: true
 
       - name: Make
         working-directory: ${{ env._gh_homebrew_dir }}

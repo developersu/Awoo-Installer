@@ -42,12 +42,7 @@ jobs:
         with:
           path: ${{ env._gh_homebrew_dir }}
 # TODO: Uncomment and remove redundant dependencies once devkitpro/devkita64 image receives GIT v2.18+
-#          submodules: recursive
-
-      - name: Checkout submodules
-        working-directory: ${{ github.workspace }}/${{ env._gh_homebrew_dir }}
-#        run: git submodule update --init --recursive
-        run: ls -la && git submodule update --init --recursive
+          submodules: true
 
       - name: Make
         working-directory: ${{ env._gh_homebrew_dir }}

@@ -13,10 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: devkitpro/devkita64:latest
     env:
       _GH_LIBNX_DIR: ./libnx
       _GH_AWOO_DIR: ./awoo
+    container: devkitpro/devkita64:latest
   
     steps:
 
@@ -30,25 +30,28 @@ jobs:
       - name: Get latest libnx
         uses: actions/checkout@v2
         with:
+          working-directory: env._GH_LIBNX_DIR
           repository: switchbrew/libnx
-          working-directory: {{ env._GH_LIBNX_DIR }}
           ref: ${{ steps.libnxtag.outputs.tag }}
 
       - name: Make
         run: make install
         with:
-          working-directory: {{ env._GH_LIBNX_DIR }}
+          working-directory: env._GH_LIBNX_DIR
 
       # Checks-out your repository
       - uses: actions/checkout@v2
         with:
+          working-directory: env._GH_AWOO_DIR 
           submodules: recursive
-          working-directory: {{ env._GH_LIBNX_DIR }}
 
       - name: Make
         run: make
+        with:
+          working-directory: env._GH_AWOO_DIR 
           
       - uses: actions/upload-artifact@v2
         with:
+          working-directory: env._GH_AWOO_DIR 
           name: Awoo-libnx-${{ steps.libnxtag.outputs.tag }}
           path: ./*.nro
